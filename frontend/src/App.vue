@@ -17,7 +17,7 @@ const store = useNoteStore()
 
 onMounted(() => {
   store.fetchNotes()       // fetch initial notes
-  store.setupSocketListener()  // 👈 setup socket listener
+ // store.setupSocketListener()  // 👈 setup socket listener
 })
 store.fetchNotes() // load notes on app start
 </script>

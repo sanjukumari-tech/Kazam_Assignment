@@ -32,8 +32,8 @@ Database	MongoDB, Redis (caching)
 
 📂 Project Structure
 bash
-Copy
-Edit
+
+
 ├── backend
 │   ├── controllers/
 │   ├── models/
@@ -51,22 +51,16 @@ Edit
 └── package.json
 ⚙️ Setup Instructions
 1️⃣ Clone Repository
-bash
-Copy
-Edit
-git clone https://github.com/your-username/note-app.git
+
+git clone https://github.com/ sanjukumari-tech/note-app.git
 cd note-app
 2️⃣ Backend Setup
-bash
-Copy
-Edit
+
 cd backend
 npm install
 ✅ Create .env file:
 
-env
-Copy
-Edit
+
 MONGO_URI=your-mongodb-connection
 REDIS_HOST=your-redis-host
 REDIS_PORT=your-redis-port

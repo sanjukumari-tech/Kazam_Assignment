@@ -5,13 +5,14 @@ import Redis from "ioredis";
 import cors from "cors";
 // import { addNote, fetchAllNotes } from './controllers/taskController'
 import taskRoutes from "./routes/taskRoutes.js";
+import connectDB from "./config/db.js";
 const app = express();
 const PORT = process.env.PORT || 5000;
 export const redis = new Redis({
   host: process.env.REDIS_HOSTNAME,
   port: Number(process.env.REDIS_PORT),
   password: process.env.REDIS_PASSWORD,
-  //   username: process.env.REDIS_USERNAME,
+    username: process.env.REDIS_USERNAME,
 });
 
 redis.on("connect", () => {
@@ -22,13 +23,20 @@ redis.on("error", (err) => {
   console.error("Redis connection error:", err);
 });
 
-app.use(cors({ origin: "http://localhost:5173" }));
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 app.use("/api", taskRoutes);
 
-app.listen(PORT, () =>
+
+app.listen(PORT,async () =>{
+  await connectDB();
   console.log(`server is running on port no http://localhost:${PORT}`)
+}
 );
 
 // import express from "express";

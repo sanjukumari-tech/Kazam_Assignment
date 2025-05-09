@@ -5,7 +5,7 @@ import axios from 'axios'
 export const useNoteStore = defineStore('noteStore', {
   state: () => ({
     notes: [],
-     socketInitialized: false // to avoid duplicate listeners
+    //  socketInitialized: false // to avoid duplicate listeners
   }),
   actions: {
     async fetchNotes() {
@@ -13,7 +13,7 @@ export const useNoteStore = defineStore('noteStore', {
         const res = await axios.get('/api/notes')
         console.log(res);
         this.notes = res.data.notes
-        // console.log(this.notes[0]);
+        console.log("ssss",this.notes[0]);
       } catch (err) {
         console.error('Fetch error:', err)
       }
@@ -21,21 +21,24 @@ export const useNoteStore = defineStore('noteStore', {
     async addNote(noteText) {
       try {
         const res = await axios.post('/api/notes', { text: noteText })
-        // console.log("addres",res);
-        // this.fetchNotes() // refresh notes after adding
+        console.log("addres",res);
+        console.log('Sending note:', noteText);
+
+        this.fetchNotes() // refresh notes after adding
       } catch (err) {
         console.error('Add error:', err)
+     
       }
     },
-      setupSocketListener() {
-      if (this.socketInitialized) return  // avoid duplicate listeners
+    //   setupSocketListener() {
+    //   if (this.socketInitialized) return  // avoid duplicate listeners
 
-      socket.on('new-note', (note) => {
-        console.log('Received new note via socket:', note)
-        this.notes.push(note)
-      })
+    //   socket.on('new-note', (note) => {
+    //     console.log('Received new note via socket:', note)
+    //     this.notes.push(note)
+    //   })
 
-      this.socketInitialized = true
-    }
+    //   this.socketInitialized = true
+    // }
   }
 })
