@@ -1,7 +1,35 @@
-import { redis } from "../index.js";
-import { Note } from "../models/Task.js";
 
+import { createRedisClient } from "../config/redis.js";
+import { Note } from "../models/Task.js";
+const redis = createRedisClient();
 const notes = [];
+
+(async () => {
+  try {
+    const cachedNotes = await redis.get('FULLSTACK_TASK_SANJUKUMARI');
+    if (cachedNotes) {
+      const parsedNotes = JSON.parse(cachedNotes);
+      notes.push(...parsedNotes);
+      console.log(`✅ Loaded ${parsedNotes.length} notes from Redis`);
+    } else {
+      console.log("ℹ️ No notes in Redis cache → fetching from MongoDB...");
+
+      // Fetch from MongoDB
+      const dbNotes = await Note.find().lean();
+      if (dbNotes.length > 0) {
+        notes.push(...dbNotes);
+        console.log(`✅ Loaded ${dbNotes.length} notes from MongoDB`);
+      } else {
+        console.log("ℹ️ No notes in MongoDB either");
+      }
+    }
+  } catch (err) {
+    console.error("❌ Failed to load notes from storage:", err);
+  }
+})();
+
+
+
 async function dataToRedis(notes) {
   if (notes.length <= 50) {
     await redis.set('FULLSTACK_TASK_SANJUKUMARI', JSON.stringify(notes));
@@ -9,7 +37,9 @@ async function dataToRedis(notes) {
     console.log("📦 Saving notes to MongoDB...");
     try {
       await Note.insertMany(notes);
-      console.log("✅ Notes saved to MongoDB");
+      const dbNotes = await Note.find().lean();
+      // console.log("dataFromMongodb",dbNotes)
+      // console.log("✅ Notes saved to MongoDB");
 
    
     } catch (err) {
@@ -24,7 +54,7 @@ export const add = async (req, res) => {
     const { text } = req.body;
   
     if (!text) return res.status(400).json({ error: "Text is required" });
-    const note = { id: notes.length + 1, text, createdAt: new Date() };
+    const note = {  text };
     notes.push(note);
     //socket connection for real time update
     // const io = req.app.locals.io;
