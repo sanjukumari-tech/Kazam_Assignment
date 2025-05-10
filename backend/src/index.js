@@ -1,15 +1,18 @@
 import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
-
+import http from "http";
 import cors from "cors";
 
 import taskRoutes from "./routes/taskRoutes.js";
 import connectDB from "./config/db.js";
+import { initSocketServer } from "./socket/server.js";
 
 const app = express();
+const server = http.createServer(app);
 const PORT = process.env.PORT || 5000;
-
+const io = initSocketServer(server);
+app.locals.io = io;
 app.use(
   cors({
     origin: "http://localhost:5173",

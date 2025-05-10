@@ -5,7 +5,7 @@ import axios from 'axios'
 export const useNoteStore = defineStore('noteStore', {
   state: () => ({
     notes: [],
-    //  socketInitialized: false // to avoid duplicate listeners
+     socketInitialized: false // to avoid duplicate listeners
   }),
   actions: {
     async fetchNotes() {
@@ -30,14 +30,8 @@ export const useNoteStore = defineStore('noteStore', {
      
       }
     },
-    //   setupSocketListener() {
-    //   if (this.socketInitialized) return  // avoid duplicate listeners
-
-    //   socket.on('new-note', (note) => {
-    //     console.log('Received new note via socket:', note)
-    //     this.notes.push(note)
-    //   })
-
+   
+    
     //   this.socketInitialized = true
     // }
   }

@@ -16,11 +16,11 @@ export function createRedisClient() {
     });
 
     redis.on("connect", () => {
-      console.log("✅ Connected to Redis");
+      console.log("Connected to Redis");
     });
 
     redis.on("error", (err) => {
-      console.error("❌ Redis connection error:", err);
+      console.error("Redis connection error:", err);
     });
   }
   return redis;
